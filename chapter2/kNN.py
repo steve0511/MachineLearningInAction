@@ -22,7 +22,7 @@ def classify0(inX, dataSet, labels, k):
 	 key = operator.itemgetter(1), reverse = True)
 	return sortedClassCount[0][0]
 	
-def file2matrix(filename):
+def file2Matrix(filename):
 	fr = open(filename)
 	arrayLines = fr.readlines()
 	numberOfLines = len(arrayLines)
@@ -68,7 +68,7 @@ def classifyPerson():
 				"percentage of time spent playing video games>"))
 	ffMiles = float(raw_input("frequent flier miles earned per year?"))
 	iceCream = float(raw_input("liters of ice cream consumed per year?"))
-	datingDataMat, datingLabels = file2matrix('ddatingTestSet2.txt')
+	datingDataMat, datingLabels = file2Matrix('ddatingTestSet2.txt')
 	normMat, ranges, minVals = autoNorm(datingDataMat)
 	inArr = array([ffMiles, percentTats, iceCream])
 	classifierResult = classify0((inArr-minVals)/ranges, normMat, datingLabels, 3)
@@ -80,25 +80,25 @@ def img2vector(filename):
 	for i in range(32):
 		lineStr = fr.readline()
 		for j in range(32):
-			returnVect[0,32*i+j] = int(linStr[j])
+			returnVect[0,32*i+j] = int(lineStr[j])
 	return returnVect
 
 def handwritingClassTest():
 	hwLabels = []
 	trainingFileList = listdir('trainingDigits')
-	m = len(trainingFileTest)
-	trainingMat = zero((m,1024))
+	m = len(trainingFileList)
+	trainingMat = zeros((m,1024))
 	for i in range(m):
-		flleNameStr = trainingFileList[i]
+		fileNameStr = trainingFileList[i]
 		fileStr = fileNameStr.split('.')[0]
 		classNumStr = int(fileStr.split('_')[0])
 		hwLabels.append(classNumStr)
-		trainningMat[i,:] = img2vector('trainingDigts/%s' % fileNameStr)
+		trainingMat[i,:] = img2vector('trainingDigts/%s' % fileNameStr)
 	testFileList = listdir('testDigits')
 	errorCount = 0.0
 	mTest = len(testFileList)
 	for i in range(mTest):
-		fileNameStr = testfileList[i]
+		fileNameStr = testFileList[i]
 		fileStr = fileStr.split('.')[0]
 		classNumStr = int(fileStr.split('_')[0])
 		vectorUnderTest = img2vector('testDigits/%s' % fileNameStr)
@@ -107,4 +107,4 @@ def handwritingClassTest():
 				% (classifierResult, classNumStr)
 		if(classifierResult != classNumStr): errorCount += 1.0
 	print "\nthe total number of errors is: %d" % errorCount
-	pirnt "\nthe total error rate is: %f" % (errorCount/float(mTest))
+	print "\nthe total error rate is: %f" % (errorCount/float(mTest))
